@@ -1,0 +1,20 @@
+Milestone 1: Environment Setup & Initial Training (Weeks 1-2)
+Objectives:
+Set up the project environment (Maven, Java, MySQL)
+Define data models (Account, Transaction)
+Basic JDBC configuration
+
+Steps:
+Create Maven Project Structure
+Create the directory structure as shown above.
+Create pom.xml with necessary dependencies (MySQL Connector, JUnit, Jakarta Mail).
+Define Data Models
+Implement Account class (src/main/java/com/banking/model/Account.java)
+Implement Transaction class (src/main/java/com/banking/model/Transaction.java)
+Set Up Database
+Create MySQL database and tables (sql/database_setup.sql)
+Implement DatabaseManager class (src/main/java/com/banking/database/DatabaseManager.java) for basic JDBC operations.
+
+Configuration:
+Create BankingConfig class (src/main/java/com/banking/config/BankingConfig.java)
+and configuration file (src/main/resources/banking_config.properties).
