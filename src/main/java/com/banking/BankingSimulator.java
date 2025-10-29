@@ -250,7 +250,7 @@ public class BankingSimulator {
                             date, time, transaction.getTransactionType(), status,
                             transaction.getAmount(),
                             transaction.getTargetAccount() != null ? transaction.getTargetAccount() : "N/A",
-                            transaction.getTransactionId().substring(0, 8) + "...");
+                            transaction.getTransactionId());
                 }
 
                 System.out.println("└──────────────┴─────────────┴──────────┴────────────┴──────────────┴────────────────┴─────────────────┘");

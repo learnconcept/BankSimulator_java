@@ -1,9 +1,14 @@
 package com.banking.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.util.Properties;
 
 public class BankingConfig {
+    private static final Logger logger = LogManager.getLogger(BankingConfig.class);
+
     private static final String CONFIG_FILE = "src/main/resources/banking_config.properties";
     private Properties properties;
 
@@ -15,9 +20,9 @@ public class BankingConfig {
     private void loadConfiguration() {
         try (InputStream input = new FileInputStream(CONFIG_FILE)) {
             properties.load(input);
-            System.out.println("✅ Configuration loaded successfully from: " + CONFIG_FILE);
+            logger.info("Configuration loaded successfully from: {}", CONFIG_FILE);
         } catch (IOException e) {
-            System.err.println("❌ Failed to load configuration file: " + e.getMessage());
+            logger.error("Failed to load configuration file: {}", e.getMessage());
             createDefaultConfiguration();
         }
     }
@@ -50,10 +55,10 @@ public class BankingConfig {
 
             try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
                 properties.store(output, "Banking System Configuration");
-                System.out.println("✅ Default configuration file created: " + CONFIG_FILE);
+                logger.info("Default configuration file created: {}", CONFIG_FILE);
             }
         } catch (IOException e) {
-            System.err.println("❌ Failed to create configuration file: " + e.getMessage());
+            logger.error("Failed to create configuration file: {}", e.getMessage(), e);
         }
     }
 
@@ -96,9 +101,9 @@ public class BankingConfig {
     public void saveConfiguration() {
         try (OutputStream output = new FileOutputStream(CONFIG_FILE)) {
             properties.store(output, "Banking System Configuration");
-            System.out.println("✅ Configuration saved successfully.");
+            logger.info("✅ Configuration saved successfully.");
         } catch (IOException e) {
-            System.err.println("❌ Failed to save configuration: " + e.getMessage());
+            logger.error("❌ Failed to save configuration: " + e.getMessage());
         }
     }
 }

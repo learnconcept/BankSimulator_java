@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DatabaseManager {
+    private static final Logger logger = LogManager.getLogger(DatabaseManager.class);
+
     private static DatabaseManager instance;
     private Connection connection;
     private BankingConfig config;
@@ -41,7 +45,7 @@ public class DatabaseManager {
             properties.setProperty("allowPublicKeyRetrieval", "true");
 
             connection = DriverManager.getConnection(url, properties);
-            System.out.println("✅ Database connection established successfully.");
+            logger.info("Database connection established successfully to: {}", url);
 
             // Test connection by creating tables if they don't exist
             createTablesIfNotExist();
@@ -91,14 +95,17 @@ public class DatabaseManager {
             for (String sql : createTablesSQL) {
                 stmt.execute(sql);
             }
-            System.out.println("✅ Database tables verified/created successfully.");
+            logger.info("Database tables verified/created successfully.");
         } catch (SQLException e) {
-            System.err.println("❌ Failed to create tables: " + e.getMessage());
+            logger.error("Failed to create tables: {}", e.getMessage(), e);
         }
     }
 
     public void logTransaction(Transaction transaction) {
-        if (connection == null) return;
+        if (connection == null) {
+            logger.debug("Cannot log transaction: Database connection is null");
+            return;
+        }
 
         String sql = "INSERT INTO transactions (account_number, transaction_type, amount, " +
                 "target_account, status, description) VALUES (?, ?, ?, ?, ?, ?)";
@@ -113,7 +120,7 @@ public class DatabaseManager {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("❌ Failed to log transaction: " + e.getMessage());
+            logger.error("Failed to log transaction: {}", e.getMessage(), e);
         }
     }
 
